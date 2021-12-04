@@ -18,24 +18,37 @@ router.post("/add", (req, res) => {
     });
 });
 
-router.post("/login", (req, res) => {
-  let user_data = req.body;
-  console.log(user_data);
-  //promise method
-  Model.findOne({ email: user_data.email.trim() })
+
+
+router.post("/backendlogin", (req, res) => {
+ 
+  console.log(req.body);
+  let formdata = req.body;
+  // promise method
+   Model.findOne( { email : formdata.email})
+    
     .then((data) => {
-      if (data) {
-        if (data.password == user_data.password.trim()) {
-          console.log("success");
-          res.status(200).json({ message: "login success" });
-        } else {
+
+      if(data){
+
+        if(data.password == formdata.password){
+          console.log("login successfull");
+          res.status(200).json(data);
+
+        }else{
           console.log("password incorrect");
           res.status(300).json({ message: "password incorrect" });
+
         }
-      } else {
+
+      }else{
         console.log("email not found");
         res.status(300).json({ message: "email not found" });
+
       }
+
+      
+      
     })
     .catch((err) => {
       console.error(err);
